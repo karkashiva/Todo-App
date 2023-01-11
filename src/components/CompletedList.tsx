@@ -13,7 +13,7 @@ export default function CompletedList({
 }: ICompletedListProps) {
   return (
     <div>
-      <h2>Completed List:</h2>
+      <h5>Completed List:</h5>
       <ul>
         {completedList.map((item, index) => (
           <CompletedItem
