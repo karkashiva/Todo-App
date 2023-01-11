@@ -76,6 +76,14 @@ function App() {
     [list, completedList]
   );
 
+  const handleCompleteDelete = useCallback(
+    (id: number) => {
+      const newList = completedList.filter((item) => item.id !== id);
+      setCompletedList(newList);
+    },
+    [completedList]
+  );
+
   return (
     <div className="App">
       <h1>
@@ -91,7 +99,10 @@ function App() {
           handleComplete={handleComplete}
           handleEdit={handleEdit}
         />
-        <CompletedList />
+        <CompletedList
+          completedList={completedList}
+          handleCompleteDelete={handleCompleteDelete}
+        />
       </h1>
     </div>
   );
