@@ -11,10 +11,28 @@ export interface Ilist {
   completed: boolean;
 }
 
+function getTodos() {
+  const todos = localStorage.getItem("list");
+  if (todos) {
+    return JSON.parse(todos);
+  }
+  return [];
+}
+
+function getCompletedTodos() {
+  const completedTodos = localStorage.getItem("completedList");
+  if (completedTodos) {
+    return JSON.parse(completedTodos);
+  }
+  return [];
+}
+
 function App() {
   const [todoName, setTodoName] = useState<string>("");
-  const [list, setList] = useState<Ilist[]>([]);
-  const [completedList, setCompletedList] = useState<Ilist[]>([]);
+  const [list, setList] = useState<Ilist[]>(getTodos());
+  const [completedList, setCompletedList] = useState<Ilist[]>(
+    getCompletedTodos()
+  );
   const [editing, setEditing] = useState<boolean>(false);
   const [editId, setEditId] = useState<number>(-1);
 
