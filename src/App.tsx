@@ -88,6 +88,10 @@ function App() {
     localStorage.setItem("list", JSON.stringify(list));
   }, [list]);
 
+  useEffect(() => {
+    localStorage.setItem("completedList", JSON.stringify(completedList));
+  }, [completedList]);
+
   return (
     <div className="App">
       <h1>
