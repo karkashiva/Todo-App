@@ -5,7 +5,7 @@ import InputForm from "./components/InputForm";
 import TodoList from "./components/TodoList";
 import CompletedList from "./components/CompletedList";
 
-interface Ilist {
+export interface Ilist {
   id: number;
   name: string;
   completed: boolean;
@@ -43,6 +43,39 @@ function App() {
     [todoName, list, editing, editId]
   );
 
+  const handleDelete = useCallback(
+    (id: number) => {
+      const newList = list.filter((item) => item.id !== id);
+      setList(newList);
+    },
+    [list]
+  );
+
+  const handleEdit = useCallback(
+    (id: number) => {
+      const newList = list.filter((item) => item.id !== id);
+      const selectedTodo = list.find((item) => item.id === id);
+      setList(newList);
+      if (!selectedTodo) return;
+      setTodoName(selectedTodo.name);
+      setEditing(true);
+      setEditId(id);
+    },
+    [list]
+  );
+
+  const handleComplete = useCallback(
+    (id: number) => {
+      const newList = list.filter((item) => item.id !== id);
+      const selectedTodo = list.find((item) => item.id === id);
+      if (!selectedTodo) return;
+      const newTodo = { id: id, name: selectedTodo.name, completed: true };
+      setList(newList);
+      setCompletedList([...completedList, newTodo]);
+    },
+    [list, completedList]
+  );
+
   return (
     <div className="App">
       <h1>
@@ -52,7 +85,12 @@ function App() {
           editing={editing}
           handleSubmit={handleSubmit}
         />
-        <TodoList />
+        <TodoList
+          list={list}
+          handleDelete={handleDelete}
+          handleComplete={handleComplete}
+          handleEdit={handleEdit}
+        />
         <CompletedList />
       </h1>
     </div>
