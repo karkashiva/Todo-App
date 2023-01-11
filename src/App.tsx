@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import InputForm from "./components/InputForm";
@@ -83,6 +83,10 @@ function App() {
     },
     [completedList]
   );
+
+  useEffect(() => {
+    localStorage.setItem("list", JSON.stringify(list));
+  }, [list]);
 
   return (
     <div className="App">
