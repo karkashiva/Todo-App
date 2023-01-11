@@ -4,6 +4,7 @@ import "./App.css";
 import InputForm from "./components/InputForm";
 import TodoList from "./components/TodoList";
 import CompletedList from "./components/CompletedList";
+import { getCompletedTodos, getTodos } from "./api";
 
 export interface Ilist {
   id: number;
@@ -11,28 +12,10 @@ export interface Ilist {
   completed: boolean;
 }
 
-function getTodos() {
-  const todos = localStorage.getItem("list");
-  if (todos) {
-    return JSON.parse(todos);
-  }
-  return [];
-}
-
-function getCompletedTodos() {
-  const completedTodos = localStorage.getItem("completedList");
-  if (completedTodos) {
-    return JSON.parse(completedTodos);
-  }
-  return [];
-}
-
 function App() {
   const [todoName, setTodoName] = useState<string>("");
-  const [list, setList] = useState<Ilist[]>(getTodos());
-  const [completedList, setCompletedList] = useState<Ilist[]>(
-    getCompletedTodos()
-  );
+  const [list, setList] = useState<Ilist[]>([]);
+  const [completedList, setCompletedList] = useState<Ilist[]>([]);
   const [editing, setEditing] = useState<boolean>(false);
   const [editId, setEditId] = useState<number>(-1);
 
@@ -103,12 +86,27 @@ function App() {
   );
 
   useEffect(() => {
-    localStorage.setItem("list", JSON.stringify(list));
+    if (list.length > 0) {
+      localStorage.setItem("todos", JSON.stringify(list));
+    }
   }, [list]);
 
   useEffect(() => {
-    localStorage.setItem("completedList", JSON.stringify(completedList));
+    if (completedList.length > 0) {
+      localStorage.setItem("completedTodos", JSON.stringify(completedList));
+    }
   }, [completedList]);
+
+  useEffect(() => {
+    getTodos().then((data) => {
+      if (!data) return;
+      setList(data);
+    });
+    getCompletedTodos().then((data) => {
+      if (!data) return;
+      setCompletedList(data);
+    });
+  }, []);
 
   return (
     <div className="App">
